@@ -24,9 +24,9 @@ var blobSupported = (function() {
  * Check if BlobBuilder is supported
  */
 
-var blobBuilderSupported = !!BlobBuilder
-  && !!BlobBuilder.prototype.append
-  && !!BlobBuilder.prototype.getBlob;
+var blobBuilderSupported = BlobBuilder
+  && BlobBuilder.prototype.append
+  && BlobBuilder.prototype.getBlob;
 
 function BlobBuilderConstructor(ary, options) {
   options = options || {};
