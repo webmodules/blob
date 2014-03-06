@@ -2,10 +2,10 @@
  * Create a blob builder even when vendor prefixes exist
  */
 
-var BlobBuilder = window.BlobBuilder
-  || window.WebKitBlobBuilder
-  || window.MSBlobBuilder
-  || window.MozBlobBuilder;
+var BlobBuilder = global.BlobBuilder
+  || global.WebKitBlobBuilder
+  || global.MSBlobBuilder
+  || global.MozBlobBuilder;
 
 /**
  * Check if Blob constructor is supported
@@ -40,7 +40,7 @@ function BlobBuilderConstructor(ary, options) {
 
 module.exports = (function() {
   if (blobSupported) {
-    return window.Blob;
+    return global.Blob;
   } else if (blobBuilderSupported) {
     return BlobBuilderConstructor;
   } else {
