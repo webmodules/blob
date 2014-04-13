@@ -24,6 +24,7 @@ var blobSupported = (function() {
  * Check if Blob constructor supports ArrayBufferViews
  * Fails in Safari 6, so we need to map to ArrayBuffers there.
  */
+
 var blobSupportsArrayBufferView = blobSupported && (function() {
   try {
     var b = new Blob([new Uint8Array([1,2])]);
@@ -40,18 +41,19 @@ var blobSupportsArrayBufferView = blobSupported && (function() {
 var blobBuilderSupported = BlobBuilder
   && BlobBuilder.prototype.append
   && BlobBuilder.prototype.getBlob;
-  
+
 /**
  * Helper function that maps ArrayBufferViews to ArrayBuffers
  * Used by BlobBuilder constructor and old browsers that didn't
  * support it in the Blob constructor.
  */
+
 function mapArrayBufferViews(ary) {
   for (var i = 0; i < ary.length; i++) {
     var chunk = ary[i];
     if (chunk.buffer instanceof ArrayBuffer) {
       var buf = chunk.buffer;
-      
+
       // if this is a subarray, make a copy so we only
       // include the subarray region from the underlying buffer
       if (chunk.byteLength !== buf.byteLength) {
@@ -59,22 +61,22 @@ function mapArrayBufferViews(ary) {
         copy.set(new Uint8Array(buf, chunk.byteOffset, chunk.byteLength));
         buf = copy.buffer;
       }
-      
+
       ary[i] = buf;
     }
   }
 }
-  
+
 function BlobBuilderConstructor(ary, options) {
   options = options || {};
 
   var bb = new BlobBuilder();
   mapArrayBufferViews(ary);
-  
+
   for (var i = 0; i < ary.length; i++) {
     bb.append(ary[i]);
   }
-  
+
   return (options.type) ? bb.getBlob(options.type) : bb.getBlob();
 };
 
@@ -85,10 +87,7 @@ function BlobConstructor(ary, options) {
 
 module.exports = (function() {
   if (blobSupported) {
-    if (blobSupportsArrayBufferView)
-      return global.Blob;
-    else
-      return BlobConstructor;
+    return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
   } else if (blobBuilderSupported) {
     return BlobBuilderConstructor;
   } else {
