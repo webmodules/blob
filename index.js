@@ -13,8 +13,9 @@ var BlobBuilder = global.BlobBuilder
 
 var blobSupported = (function() {
   try {
-    var b = new Blob(['hi']);
-    return b.size == 2;
+    var a = new Blob(['hi']);
+    var b = new Blob([new Uint8Array([1,2])]);
+    return a.size === 2 && b.size === 2;
   } catch(e) {
     return false;
   }
