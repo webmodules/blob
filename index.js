@@ -14,8 +14,20 @@ var BlobBuilder = global.BlobBuilder
 var blobSupported = (function() {
   try {
     var a = new Blob(['hi']);
+    return a.size === 2;
+  } catch(e) {
+    return false;
+  }
+})();
+
+/**
+ * Check if Blob constructor supports ArrayBufferViews
+ * Fails in Safari 6, so we need to map to ArrayBuffers there.
+ */
+var blobSupportsArrayBufferView = blobSupported && (function() {
+  try {
     var b = new Blob([new Uint8Array([1,2])]);
-    return a.size === 2 && b.size === 2;
+    return b.size === 2;
   } catch(e) {
     return false;
   }
@@ -29,14 +41,14 @@ var blobBuilderSupported = BlobBuilder
   && BlobBuilder.prototype.append
   && BlobBuilder.prototype.getBlob;
   
-function BlobBuilderConstructor(ary, options) {
-  options = options || {};
-
-  var bb = new BlobBuilder();
+/**
+ * Helper function that maps ArrayBufferViews to ArrayBuffers
+ * Used by BlobBuilder constructor and old browsers that didn't
+ * support it in the Blob constructor.
+ */
+function mapArrayBufferViews(ary) {
   for (var i = 0; i < ary.length; i++) {
     var chunk = ary[i];
-    
-    // extract ArrayBuffers from ArrayBufferViews
     if (chunk.buffer instanceof ArrayBuffer) {
       var buf = chunk.buffer;
       
@@ -48,17 +60,35 @@ function BlobBuilderConstructor(ary, options) {
         buf = copy.buffer;
       }
       
-      bb.append(buf);
-    } else {
-      bb.append(chunk);
+      ary[i] = buf;
     }
   }
+}
+  
+function BlobBuilderConstructor(ary, options) {
+  options = options || {};
+
+  var bb = new BlobBuilder();
+  mapArrayBufferViews(ary);
+  
+  for (var i = 0; i < ary.length; i++) {
+    bb.append(ary[i]);
+  }
+  
   return (options.type) ? bb.getBlob(options.type) : bb.getBlob();
+};
+
+function BlobConstructor(ary, options) {
+  mapArrayBufferViews(ary);
+  return new Blob(ary, options || {});
 };
 
 module.exports = (function() {
   if (blobSupported) {
-    return global.Blob;
+    if (blobSupportsArrayBufferView)
+      return global.Blob;
+    else
+      return BlobConstructor;
   } else if (blobBuilderSupported) {
     return BlobBuilderConstructor;
   } else {
