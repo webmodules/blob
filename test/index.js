@@ -16,7 +16,7 @@ describe('blob', function() {
     expect(b.size).to.be(7);
   });
 
-  it('should encode arraybuffers with right content', function() {
+  it('should encode arraybuffers with right content', function(done) {
     var ary = new Uint8Array(5);
     for (var i = 0; i < 5; i++) ary[i] = i;
     var b = new Blob([ary.buffer]);
@@ -24,10 +24,13 @@ describe('blob', function() {
     fr.onload = function() {
       var newAry = new Uint8Array(this.result);
       for (var i = 0; i < 5; i++) expect(newAry[i]).to.be(i);
+      done();
     };
+    fr.readAsArrayBuffer(b);
+  });
   });
 
-  it('should encode with blobs', function() {
+  it('should encode with blobs', function(done) {
     var ary = new Uint8Array(5);
     for (var i = 0; i < 5; i++) ary[i] = i;
     var b = new Blob([new Blob([ary.buffer])]);
@@ -35,7 +38,9 @@ describe('blob', function() {
     fr.onload = function() {
       var newAry = new Uint8Array(this.result);
       for (var i = 0; i < 5; i++) expect(newAry[i]).to.be(i);
+      done();
     };
+    fr.readAsArrayBuffer(b);
   });
 
   it('should enode mixed contents to right size', function() {
