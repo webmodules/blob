@@ -7,7 +7,7 @@ describe('blob', function() {
       try {
         var ab = (new Uint8Array(5)).buffer;
         global.Blob([ab]);
-        expect().fail('Buffer shouldn\'t be constructable');
+        expect().fail('Blob shouldn\'t be constructable');
       } catch (e) {}
 
       var BlobBuilder = global.BlobBuilder
