@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:rase-/blob.git"
+    "url": "git@github.com:webmodules/blob.git"
   },
   "scripts": {
     "test": "make test"
