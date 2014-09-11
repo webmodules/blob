@@ -10,5 +10,5 @@ var Blob = require('blob');
 var b = new Blob(['hi', 'constructing', 'a', 'blob']);
 ```
 
-## Licence
+## License
 MIT
