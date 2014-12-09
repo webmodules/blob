@@ -2,7 +2,7 @@
   "name": "blob",
   "description": "Abstracts out Blob and uses BlobBulder in cases where it is supported with any vendor prefix.",
   "version": "0.0.4",
-  "homepage": "https://github.com/rase-/blob",
+  "homepage": "https://github.com/webmodules/blob",
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:webmodules/blob.git"
+    "url": "git://github.com/webmodules/blob.git"
   },
   "scripts": {
     "test": "make test"
