@@ -1,7 +1,7 @@
 Blob
 ====
 
-A module that exports a constructor that uses `window.Blob` when available,
+A module that exports a function that uses `window.Blob` when available,
 and a `BlobBuilder` with any vendor prefix in other cases.
 
 If neither is available, it exports `undefined`.
@@ -19,8 +19,8 @@ Example
 -------
 
 ``` js
-var Blob = require('blob');
-var b = new Blob(['hi', 'constructing', 'a', 'blob']);
+var blob = require('blob');
+var b = blob(['hi', 'constructing', 'a', 'blob']);
 ```
 
 
