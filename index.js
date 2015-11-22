@@ -79,13 +79,17 @@ function BlobBuilderConstructor(ary, options) {
   return (options.type) ? bb.getBlob(options.type) : bb.getBlob();
 };
 
-function BlobConstructor(ary, options) {
+function BlobArrayBufferViewSupportConstructor(ary, options) {
   return new Blob(mapArrayBufferViews(ary), options || {});
+};
+
+function BlobConstructor(ary, options) {
+  return new Blob(ary, options || {});
 };
 
 module.exports = (function() {
   if (blobSupported) {
-    return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
+    return blobSupportsArrayBufferView ? BlobConstructor : BlobArrayBufferViewSupportConstructor;
   } else if (blobBuilderSupported) {
     return BlobBuilderConstructor;
   } else {
