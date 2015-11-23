@@ -83,6 +83,11 @@ function BlobConstructor(ary, options) {
   return new Blob(mapArrayBufferViews(ary), options || {});
 };
 
+if (global.Blob) {
+  BlobBuilderConstructor.prototype = Blob.prototype;
+  BlobConstructor.prototype = Blob.prototype;
+}
+
 module.exports = (function() {
   if (blobSupported) {
     return blobSupportsArrayBufferView ? global.Blob : BlobConstructor;
