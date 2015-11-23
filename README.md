@@ -1,30 +1,21 @@
-Blob
-====
+# Blob
 
-A module that exports a constructor that uses `window.Blob` when available,
-and a `BlobBuilder` with any vendor prefix in other cases.
-
+A cross-browser `Blob` that falls back to `BlobBuilder` when appropriate.
 If neither is available, it exports `undefined`.
 
-
-Installation
-------------
+## Installation
 
 ``` bash
 $ npm install blob
 ```
 
-
-Example
--------
+## Example
 
 ``` js
 var Blob = require('blob');
 var b = new Blob(['hi', 'constructing', 'a', 'blob']);
 ```
 
-
-License
--------
+## License
 
 MIT
