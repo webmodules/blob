@@ -2,7 +2,7 @@
   "name": "blob",
   "repo": "webmodules/blob",
   "description": "Abstracts out Blob and uses BlobBulder in cases where it is supported with any vendor prefix.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "MIT",
   "dependencies": {},
   "scripts": [
